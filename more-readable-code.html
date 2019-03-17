@@ -1,0 +1,910 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+
+  <title>Good Quality of a Project - More Readable Code</title>
+  <meta name='description' content=''>
+
+  <link rel='stylesheet' href='css/reveal.min.css'>
+  <link rel='stylesheet' href='css/theme/fractalsoft_julia.css'>
+
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+</head>
+<body>
+
+<div class='reveal'>
+<div class='slides'>
+
+
+
+<section>
+  <section>
+    <h1>
+      <span>More Readable Code</span>
+    </h1>
+    <h2>Good Quality of a Project</h2>
+    <p>
+      <a href='https://torrocus.com' target='_blank' title='Web developer'>Alek Malaszkiewicz</a> at <a href='https://fractalsoft.org' target='_blank' title='Ruby on Rails developers'>Fractal Soft</a>
+    </p>
+    <span class='fragment fade-in'>
+      <img src='images/more-readable-code/nyan-cat.gif' class='pure-image' />
+    </span>
+
+    <aside class='notes'>
+      Ta prezentacja ma pobudzić Was do myślenia.
+      Wzbudzić w Was potrzebę zastanowienia się nad kilkoma sprawami.
+      Przypomnieć Wam o zasadach, które prawdopodobnie znacie, ale wciąż o nich zapominacie lub ignorujecie.
+      Pokazać, że czasem można podejść do spraw w inny sposób.
+      Ale głównym celem jest zwiększyć Waszą jakość tego co robicie zmieniając sposób myślenia o tym co robicie.
+    </aside>
+  </section>
+
+  <section>
+    <img src='images/more-readable-code/torrocus-at-quality-excites.jpg' alt='@torrocus at Quality Excites' class='pure-image'>
+  </section>
+</section>
+
+<!-- 
+<section data-background='images/more-readable-code/unicorn.gif'>
+</section>
+ -->
+
+<section>
+  <section>
+    <h2>Tools</h2>
+
+    <img src='images/more-readable-code/caveman-tools.svg' alt='caveman with tools' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Ludzie od dawna używają narzędzi.
+      Wymyślamy je ponieważ mają nam ułatwiać życie.
+    </aside>
+  </section>
+
+  <section data-background='images/more-readable-code/developer-love-tools.jpg'>
+    <h2>Developers love the tools!</h2>
+
+    <aside class='notes'>
+      Programiści i testerzy uwielbiają narzędzia.
+      Często większą wagę przywiązujemy do narzędzi niż do tworzonego produktu.
+      Każdy to robi.
+      Sam też tak robię.
+      Nie jestem z tego dumny, ale akceptuję ten fakt.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Responsibility</h2>
+
+    <div class='container'>
+      <div class='column'>
+        <h3>Code</h3>
+      </div>
+
+      <div class='column'>
+        <h3>Tests</h3>
+      </div>
+    </div>
+
+    <aside class='notes'>
+      Co jest naszą główną odpowiedzialnością?
+      Co jest ważniejsze?
+      Pisanie kodu?
+      Pisanie testów?
+      Integrowanie się w zespole?
+      Polepszenie komunikacji w projekcie?
+      Jak się nad tym dobrze zastanowić to wcale nie chodzi o aplikacje.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Problem & Solution</h2>
+
+    <img src='images/more-readable-code/rubiks-cube.svg' alt='problem to solve' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Klient ma jakiś problem, a my chcemy go rozwiązać przy pomocy "narzędzi" IT.
+      Naszym zadaniem jest dostarczenie rozwiązania dla klienta.
+      Nic więcej.
+      Cała reszta to tylko narzędzia.
+      I przez narzędzia rozumiem różne rzeczy, ale o tym za chwilę.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Elephant in the room</h2>
+
+    <img src='images/more-readable-code/elephant.svg' alt='elephant' class='pure-image' width='64%'>
+
+    <aside class='notes'>
+      Znacie problem słonia w pokoju?
+      Sfomuowanie to znane jest również pod nazwą syndrom słonia w pokoju.
+      Każdy "widzi" słonia, ale nikt o nim nie mówi.
+      To metafora do problemów o których nikt nie chce mówić.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Trust</h2>
+
+    <img src='images/more-readable-code/owl.svg' alt='owl' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Klient ufa nam.
+      Wierzy, że rozwiążemy jego problem w najlepszy możliwy sposób.
+      Polega na naszej wiedzy i doświadczeniu.
+      Ufa, że użyjemy do tego odpowiednich narzędzi.
+      Nie oszukujmy się.
+      Jakby klient miał czas i wiedzę to sam by zbudował to rozwiązanie.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Technology</h2>
+
+    <img src='images/more-readable-code/tux.svg' alt='tux' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      A co my robimy?
+      Kłócimy się, która technologia jest lepsza od innej.
+      Namawiamy klienta na swoje usługi argumentując to, że w proponowanej technologii to rozwiązanie będzie lepsze.
+      Mamy tysiące języków i frameworków, miliony bibliotek.
+      Codziennie powstają nowe, lepsze, szybsze.
+      Naprawdę uważacie, że to jest dla Waszego klienta najważniejsze?
+      Że Wasz klient dba w jakiej technologii dostarczycie dla niego rozwiązanie?
+    </aside>
+  </section>
+
+  <section>
+    <h2>
+      The change of technology does not change anything.
+    </h2>
+
+    <aside class='notes'>
+      Zmiana technologii nic nie zmienia.
+      Kto wie kto to powiedział?
+      Tak mówimy w firmie.
+      Nie zrozumcie mnie źle.
+      Nie oznacza to wcale, że każda technologia nadaje się do wszystkiego.
+      Albo, że nie ma technologii dedykowanych do konkretnych rozwiązań.
+      Chodzi mi raczej o sytuacje, gdzie zmieniamy jeden framework na drugi tylko dlatego, że ten drugi staje się modny.
+      Tą zmianę argumentujemy klientowi w przedziwny sposób.
+      Wmawiamy mu, że to drugie narzędzie sprawi, że szybciej powstaną funkcjonalności i będzie mniej bugów.
+      I nie ważne, że nie znamy tej nowej rzeczy.
+      W Internecie napisali, że jest niska bariera wejścia i łatwo się tego używa.
+      Później klient oczekuje, że to co było pisane przez kilka lat zostanie przepisane w kilka miesięcy na nową technologię.
+      Oszukujemy siebie i klienta!
+      Albo oszukujemy tylko klienta, a my jesteśmy tak zaślepieni podążaniem za nowym, że nie widzimy problemu.
+      Znam kilka projektów, które tak mają.
+      Wy pewnie też znacie takie projekty.
+      Zastanówcie się nad tym.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Best testers</h2>
+
+    <aside class='notes'>
+      Kim są Wasi najlepsi testerzy?
+      To użytkownicy Waszej aplikacji! 
+      Słuchajcie ich. 
+      Oni mówią co im nie pasuje i co chcieliby poprawić. 
+      Dajcie im głos. 
+      A pozwolą Wam zwiększyć jakość tego co robicie.
+    </aside>
+  </section>
+</section>
+
+<section>
+  <section>
+    <h2>Resources for developers & testers</h2>
+
+    <img src='images/more-readable-code/tools.svg' alt='tools' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Skupmy się teraz na zasobach służących do rozwiązywania problemów.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Computer</h2>
+
+    <img src='images/more-readable-code/computer.svg' alt='computer' class='pure-image'>
+
+    <aside class='notes'>
+      Komputer nie zrobi nic bez instrukcji.
+      Komputer niczego nie potrafi sam z siebie.
+      To rzeźba, która tylko zajmuje miejsce.
+      Programista jest odpowiedzialny za to jak będzie liczył kompter.
+      Tester jest odpowiedzialny za to czy to będzie to co chcemy liczyć.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Developer & Tester tools</h2>
+
+    <ul>
+      <li class='fragment' data-fragment-index='1'>Revision Control System</li>
+      <li class='fragment' data-fragment-index='2'>Testing tools</li>
+      <li class='fragment' data-fragment-index='3'>Debugging tools</li>
+      <li class='fragment' data-fragment-index='4'>Software metrics</li>
+      <li class='fragment' data-fragment-index='5'>Profiling tools</li>
+      <li class='fragment' data-fragment-index='6'>Source code editor with syntax highlighting</li>
+    </ul>
+
+    <aside class='notes'>
+      Jakich używany narzędzi?
+      System kontroli wersji: Git, Bazaar, Mercurial, SVN, CVS, itd.
+      Narzędzia do testowania: testy jednostkowe, integracyjne, systemowe, itd.
+      Każda technologia ma inne narzędzie, ale zasady podobne.
+      Narzędzia do debugowania.
+      Metryki oprogramowania, zazwyczaj statyczna analiza kodu.
+      Narzędzia do profilowania, czyli dynamicznej analizy programu.
+      I oczywiście edytor z kodem źródłowym, który podkreśla nam składnię.
+      Jeśli coś pominąłem to albo nie znam albo zaklasyfikowałem to do jednej z powyższych grup.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Human</h2>
+    <h3>Tester or developer</h3>
+
+    <img src='images/more-readable-code/people.svg' alt='people' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Języki programowania zostały stworzone przez ludzi dla ludzi.
+      Komputery rozumieją język maszynowy.
+      Ludzie nie!
+      Są wyjątki, ale nie o to chodzi.
+      Kod źródłowy i testy są dla programistów i testerów.
+      Co przez to rozumiem?
+      Nasz mózg interpretuje to co piszemy.
+      Trochę jak komputer.
+      Pracując z kodem źródłowym czytamy go nawet częściej niż komputer.
+      Ale pamiętajmy, że jesteśmy ludźmi i popełniamy błędy.
+      To część procesu twórczego.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Forgotten resource</h3>
+
+    <aside class='notes'>
+      Zapomnieliśmy o jednym zasobie jaki mamy.
+      To za ten zasób klient nam płaci.
+      Tym zasobem jest...
+    </aside>
+  </section>
+</section>
+
+
+
+<section>
+  <section>
+    <h2>The brain</h2>
+
+    <p>
+      The most important tool for any developer and tester!
+    </p>
+
+    <img src='images/more-readable-code/pinky-and-the-brain.png' alt='pinky and the brain' class='pure-image'>
+
+    <aside class='notes'>
+      Pinky: Móżdżku, co będziemy robić dziś w nocy?
+      Mózg: Dokładnie to samo co robimy każdej Pinky, opanowywać świat!
+      Chcę, abyście opanowywali świat swoimi mózgami.
+      Abyście z nich korzystali tak często jak tylko możecie.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Brain of programmer & tester</h3>
+
+    <p>
+      The brain properties:
+      <ul>
+        <li class='fragment' data-fragment-index='1'>likes order</li>
+        <li class='fragment' data-fragment-index='2'>likes to focus</li>
+        <li class='fragment' data-fragment-index='3'>likes patterns</li>
+      </ul>
+    </p>
+
+    <img src='images/more-readable-code/brain.svg' alt='brain' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Mózg jest wspaniały, ale ma swoje ograniczenia.
+      Powinniśmy więc nauczyć się jak możemy mu pomóc.
+      Mózg lubi porządek, skupienie i wzorce.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Order</h3>
+
+    <p class='fragment fade-in'>Garbage in, garbage out</p>
+
+    <img src='images/more-readable-code/clean.svg' alt='clean' class='pure-image' width='64%'>
+
+    <aside class='notes'>
+      Jak ważny jest porządek w Waszych projektach?
+      Znacie to powiedzenie?
+      Śmieci na wejściu, śmieci na wyjściu.
+      Zazwyczaj ten zwrot stosuje się do danych, które jeśli będą błędne to wynik ich przetwarzania również będzie błędny.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Order</h3>
+    <h4>Clean code & tests</h4>
+
+    <ul>
+      <li class='fragment' data-fragment-index='0'>simple - use <span class='fragment highlight-red'>KISS</span> principle</li>
+      <li class='fragment' data-fragment-index='0'>without repetition - use <span class='fragment highlight-green'>DRY</span></li>
+      <li class='fragment' data-fragment-index='0'>clear, easy to understand</li>
+      <li class='fragment' data-fragment-index='0'>elegant, be proud of it</li>
+      <li class='fragment' data-fragment-index='0'>effective</li>
+      <li class='fragment' data-fragment-index='0'>easy to expand</li>
+    </ul>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>
+      How to increase the quality<br>
+      in the project?
+    </h2>
+
+    <p class='fragment fade-in'>Easy tips</p>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+
+  <section>
+    <h3>Principle scouts</h3>
+
+    <p class='fragment fade-in'>
+      Leave the code cleaner than you found them.
+    </p>
+
+    <img src='images/more-readable-code/scouts.jpg' alt='scouts' class='pure-image' width='64%'>
+
+    <aside class='notes'>
+      Byliście kiedyś w harcertwie albo skautach?
+      Obozując w jakimś miejscu przyjęło się taką zasadę:
+      Opuszczając miejsce w którym byłeś zostaw jest czystsze niż wcześniej.
+      Dobrze jest stosować tą zasadę również w IT.
+      Zostaw kod czystszy niż go znalazłeś.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Comments</h3>
+
+    <blockquote>
+      <p>Don't comment bad code - rewrite it.</p>
+      <footer>- Brian W. Kernighan and P. J. Plaugher</footer>
+    </blockquote>
+
+    <aside class='notes'>
+      Nie komentuj złego kodu.
+      Po prostu go przepisz.
+    </aside>
+  </section>
+
+  <section>
+    <img src='images/more-readable-code/cloud.svg' class='pure-image' width='16%'>
+
+    <h3>Comments</h3>
+
+    <ul>
+      <li class='fragment' data-fragment-index='1'>Comments should explain the code that does not explain itself.</li>
+      <li class='fragment' data-fragment-index='2'>Comments not fix bad code.</li>
+      <li class='fragment' data-fragment-index='3'>Comments may lie.</li>
+      <li class='fragment' data-fragment-index='4'>Remove redundant comments.</li>
+    </ul>
+
+    <aside class='notes'>
+      Komentarze powinny wyjaśniać kod, który nie jest jasny.
+      Komentarze nie naprawiają kodu.
+      Komentarze mogą kłamać.
+      Usuń zbędne komentarze.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Meaningful names</h3>
+
+    <ul>
+      <li class='fragment' data-fragment-index='1'>Don't use shorten names. Don't use too long names.</li>
+      <li class='fragment' data-fragment-index='2'>Name is wrong, if the required comment.</li>
+      <li class='fragment' data-fragment-index='3'>Name can be pronounced.</li>
+      <li class='fragment' data-fragment-index='4'>Class is a noun. Method (function) is a verb.</li>
+    </ul>
+
+    <aside class='notes'>
+      Nazwa ma znaczenie.
+      Nie używaj zbyt krótkich nazwa, ani zbyt długich.
+      Nazwa jest błędna jeśli wymaga komentarza.
+      Nazwa powinna być możliwa do wymówienia.
+      Dobrą zasadą jest klasy nazywać rzeczownikiem, a metody czasownikami.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Focus</h3>
+
+    <img src='images/more-readable-code/eyes.svg' class='pure-image' width='100%'>
+
+    <aside class='notes'>
+      Ludzki mózg ma ograniczoną percepcję.
+      Potrafimy skupić się na 2 ekranach, ale nie na tysiącu linii kodu.
+      Dlatego dobrze jest zdefiniować w zespole standardy i zasady.
+      I trzymać się ich.
+      Próbować je i dyskutować.
+      Coś co dla nas jest jasne i przejrzyste, może nie być jasne dla innych.
+    </aside>
+  </section>
+</section>
+
+
+
+<section>
+  <section data-background='images/more-readable-code/fight-club.jpg'>
+    <h2>Rules of Fight Club</h2>
+
+    <ol class='fragment fade-in'>
+      <li>You do not talk about Fight Club.</li>
+      <li>You do not talk about Fight Club.</li>
+      <li>If someone says "stop" or goes limp, taps out the fight is over.</li>
+      <li>Only two guys to a fight.</li>
+      <li>One fight at a time.</li>
+      <li>No shirts, no shoes.</li>
+      <li>Fights will go on as long as they have to.</li>
+      <li>If this is your first night at Fight Club, you HAVE to fight.</li>
+    </ol>
+
+    <aside class='notes'>
+      Znacie film Podziemny Krąg?
+      Pamiętacie zasady Podziemnego Kręgu?
+      Pierwsza zasada: Nie rozmawiamy o Podziemnym Kręgu.
+      Druga zasada: Nie rozmawiamy o Podziemnym Kręgu.
+      I kolejna, kolejna.
+      Zainspirujmy się tym i stwórzmy własne zasady.
+    </aside>
+  </section>
+
+  <section data-background='images/more-readable-code/fight-club.jpg'>
+    <h2>Rules of Dev Club</h2>
+
+    <ol>
+      <li class='fragment' data-fragment-index='1'>Break the rules if others agree</li>
+      <li class='fragment' data-fragment-index='2'>100 lines / class</li>
+      <li class='fragment' data-fragment-index='3'>5 lines / method</li>
+      <li class='fragment' data-fragment-index='4'>4 params / method</li>
+      <li class='fragment' data-fragment-index='5'>1 instance object / controller</li>
+      <li class='fragment' data-fragment-index='6'>80 characters / line</li>
+      <li class='fragment' data-fragment-index='7'>1 tab indentation / method</li>
+      <li class='fragment' data-fragment-index='8'>1 dot / line</li>
+    </ol>
+
+    <aside class='notes'>
+      To są moje subiektywne zasady.
+      Ustaliliśmy je lata temu.
+      Oparliśmy się o zasady Sandi Metz (od 2 do 5).
+      Nie zmieniają się i staramy się je stosować.
+      Omówię każdą z zasad po kolei, aby je lepiej zrozumieć.
+      Zasady można złamać, ale tylko wtedy gdy inne osoby w zespole się na to zgadzają.
+      Pierwsza zasada jest tylko pewnym uzupełnieniem.
+      Myślę, że nie trzeba jej wyjaśniać.
+    </aside>
+  </section>
+
+  <section>
+    <h3>100 lines / class</h3>
+
+    <aside class='notes'>
+      100 linii na klasę.
+      Utrzymanie krótszych klas jest łatwiejsze.
+      A do tego wymusza zachowanie pojedynczej odpowiedzialności klasy.
+      Na pewno znacie założenia SOLID.
+      Literka S - Single responsibility principle (Zasada jednej odpowiedzialności).
+      Jeżeli stosujecie pojedynczą odpowiedzialność to nie powinniście mieć problemów.
+    </aside>
+  </section>
+
+  <section>
+    <h3>5 lines / method</h3>
+
+    <aside class='notes'>
+      Ograniczenie do 5 linii na metodę / funkcję nie jest łatwe.
+      Przede wszystkim wymusza atomowe myślenie o tym co robimy.
+      Zauważcie, że zmieścicie tam tylko jedną instrukcję warunkową if-else.
+      To wymusza użycie klarownych i dobrze nazwanych metod prywatnych.
+    </aside>
+  </section>
+
+  <section>
+    <h3>4 params / method</h3>
+
+<pre>
+<code class='hljs ruby'># Too many arguments
+def add_contact(firstname, lastname, email, phone, mobile, country, city, street, 
+    postcode, skype, facebook, twitter, github, ...
+  )
+  ...
+end
+</code></pre>
+
+    <aside class='notes'>
+      Zasada pozwala nam lepiej kontrolować parametry.
+      I nie chodzi tutaj o robienie obejść i haków tylko po to, aby spełnić regułę.
+      Kolekcje typu hash, lista, dictionary to nie jest dobre rozwiązanie.
+      Chodzi o przemyślenie jakich danych potrzebujemy w metodzie.
+    </aside>
+  </section>
+
+  <section>
+    <h3>1 instance object / controller</h3>
+
+    <aside class='notes'>
+      To nie jest prosta reguła.
+      Stosujemy ją ponieważ jest związana z Ruby on Rails.
+      Ale myślę, że można ją przełożyć na dowolny framework.
+      Chodzi o to, żeby na widok (do GUI) nie przekazywać wielu obiektów.
+      Wymaga to lepszego przemyślenia architektury.
+      Jeśli chcemy coś wyświetlić pomoże nam wzorzec projektowy fasada.
+      Jeśli chcemy mieć rozbudowany formularz to użyjmy object forma.
+    </aside>
+  </section>
+
+  <section>
+    <h3>80 characters / line</h3>
+
+<pre>
+<code class='hljs ruby'># Too long line
+def very_long_method_name_with_parameters_list(first_parameter, second_parameter, third_parameter)
+  ...
+end
+</code></pre>
+
+    <aside class='notes'>
+      Dlaczego 80 znaków?
+      Ilość możecie dobrać sobie sami.
+      Może być 100, 120, 140, zależy od Waszych upodobań.
+      80 znaków jest optymalne i w każdych warunkach zmieści się w całości na ekranie.
+      Ważne, aby nie trzeba było przewijać kodu w bok.
+      Osoby, które szybko czytają czytają całą linię.
+      Sami sobie utrudniamy pracę jak nie widzimy całej linii.
+    </aside>
+  </section>
+
+  <section>
+    <h3>1 tab indentation / method</h3>
+
+    <aside class='notes'>
+      Jedno wcięcie powoduje, że metoda albo ma 1 blok warunku, albo tylko jedno zagnieżdżenie pętli.
+      Przy dwóch zagnieżdżonych pętlach rośnie ryzyko popełnienia błędu.
+    </aside>
+  </section>
+
+  <section>
+    <h3>1 dot / line</h3>
+
+<pre>
+<code class='hljs ruby'># Bad
+object.some_method.another_method.and_another_method.and_next_another_method
+
+# Better
+object.some_method
+      .another_method
+      .and_another_method
+      .and_next_another_method
+</code></pre>
+
+    <aside class='notes'>
+      Chodzi tutaj o jedno wywołanie metody na linię.
+      Kropka jest operatorem w Ruby.
+      W innych językach mogą to być inne symbole.
+      Zasada ta mówi o nie nadużywaniu wywołań metod.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Define Your Rules</h3>
+
+    <aside class='notes'>
+      Pamiętajcie, że zasady są dla Was.
+      To Wy musicie się z nimi utożsamiać.
+      Stwórzcie swoje zasady w zespole.
+      Eksperymentujcie i zmieniajcie.
+      Ale pamiętajcie, że Wasz mózg ma ograniczenia.
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Pattern</h2>
+
+    <aside class='notes'>
+      Nasz mózg uwielbia wzorce.
+      Podświadomie szukamy wzorców nawet tam gdzie ich nie ma.
+      Pomóżmy mózgowi zdobyć świat.
+      Pokazujmy mu wzorce.
+      Nie bądź jak Pinky.
+      Bądź jak Mózg, mózg, mózg.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Not guess, read the documentation</h3>
+
+    <aside class='notes'>
+      Programiści często wymyślają dziwne, własne sposoby na uzyskanie jakiegoś efektu.
+      A wystarczy poszukać i przeczytać dokumentację.
+      Przestańmy zgadywać i zacznijmy czytać ze zrozumieniem.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Convention over configuration</h3>
+
+    <aside class='notes'>
+      Wiele frameworków, bibliotek, języków ma jakąś konwencję.
+      Trzymajmy się jej.
+      Będzie nam łatwiej rozwijać projekt.
+      I będzie mniejszy próg wejścia dla nowych osób wchodzących do projektu.
+      Niektórzy narzekają na różne konwencje.
+      Ale często ich autorzy znają lepiej daną technologię.
+      Tak jak klient ufa nam, my powinniśmy ufać autorom technologii.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Use design patterns</h3>
+
+    <aside class='notes'>
+      O wzorcach projektowych jest wiele materiałów.
+      Są książki, prezentacje, przykłady.
+      Uczmy się, korzystajmy z nich.
+      Ale nic na siłę.
+      Nie starajmy się za wcześnie wyciągnąć abstrakcji.
+      Dajmy sobie czas i nabieżmy dystansu do tego co napiszemy.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Use the alphabet</h3>
+
+    <img src='images/more-readable-code/boy-with-books.svg' alt='boy with books' class='pure-image' width='32%'>
+
+    <aside class='notes'>
+      Używajmy alfabetu.
+      To jest nasz najprostszy wzorzec.
+      My układamy metody w kolejności alfabetycznej.
+      Podobnie zmienne.
+      Dzięki temu łatwiej jest nam określić czy już jest taka nazwa.
+      Łatwiej nam znaleźć te elementy w kodzie.
+      Nasz mózg traktuje alfabet bardzo naturalnie.
+      Pomyślcie o tym jak szukacie czegoś w papierowym słowniku.
+      Wiem, pewnie część z Was nigdy tego nie robiła.
+      Teraz jest wszystko elektroniczne.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Guard Clause / Error First</h3>
+
+<pre>
+<code class='hljs ruby'># Bad
+def lorem
+  if foo?
+    if bar? 
+      if baz?
+        do_something
+      else
+        error_baz
+      end
+    else
+      errror_bar
+    end
+  else
+    error_foo
+  end
+end
+
+# Better
+def lorem 
+  return error_foo if foo?
+  return error_bar if bar?
+  return error_baz if baz?
+  do_something
+end
+</code></pre>
+
+
+    <aside class='notes'>
+      Klauzula ochronna, ale nazwa.
+      Wolę nazwę "najpierw błąd".
+      Chodzi o to, aby tak pisać kod, żeby pozwolić mu się "wywalać" i rozpatrywać te przypadki.
+    </aside>
+  </section>
+
+</section>
+
+
+<section>
+  <section>
+    <h2>Will my code be more readable?</h2>
+
+    <aside class='notes'>
+      Czy mój kod będzie bardziej czytelny?
+      Załóżmy, że używacie tego wszystkiego.
+      Zastanówcie się dla kogo to wszystko robicie.
+      Nie dla klienta, bo klient płaci za rozwiązanie.
+      Robicie to dla siebie samych.
+      Dla zespołu z którym pracujecie.
+      I na wypadek jak będziecie musieli zajrzeć jeszcze raz do fragmentu kodu, który napisaliście.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Readability</h3>
+
+    <p class='fragment fade-in'>relationship between the code and the reader</p>
+
+    <aside class='notes'>
+      A teraz zastanówcie się czym jest czytelność.
+    </aside>
+  </section>
+
+  <section>
+    <h3>Brains of all team members operate similarly</h3>
+
+    <aside class='notes'>
+      Mózgi wszystkich członków zespołu działają podobnie.
+      Czy bardziej podoba Wam się Wasz kod czy kod innego developera?
+      Wiecie dlaczego tak jest?
+      Ponieważ podobają nam się rzeczy z którymi się utożsamiamy.
+      Dlatego jeśli cały zespół pisze kod i testy w ten sam sposób to łatwiej mam działać w takim środowisku.
+      Jeśli każdy będzie pisał po swojemu to nie będziemy mogli się skupić na istotnych częściach.
+      Kod źródłowy to ważne narzędzie komunikacji.
+    </aside>
+  </section>
+
+
+  <section>
+    <h3>Source code is the important communication tool</h3>
+
+    <aside class='notes'>
+      Kod źródłowy to ważne narzędzie komunikacji.
+      Refaktoring to jest proces ciągły.
+      To nie jest dzień, tydzień czy miesiąc przeznaczony na zmiany w kodzie.
+      Dlatego życzę Wam, abyście tworzyli takie rozwiązania, jakich oczekuje klient.
+      Oraz pisali taki kod i testy, których nie powstydziliby się inni członkowie zespołu.
+      I obyście nigdy nie musieli zacytować Sławka Sobótki:
+      Do utrzymania tego projektu trzeba silnie zmotywowanego zespołu,
+      który stojąc po szyję w szambie nie wacha uklęknąć.
+    </aside>
+  </section>
+</section>
+
+
+
+<section>
+  <h2>Thank you</h2>
+
+  <ul>
+    <li>Fractal Soft page: <a href='https://fractalsoft.org'><strong>fractalsoft.org</strong></a></li>
+    <li>Fractal Soft blog: <a href='https://blog.fractalsoft.org'><strong>blog.fractalsoft.org</strong></a></li>
+    <li>Home page: <a href='https://torrocus.com'><strong>torrocus.com</strong></a></li>
+  </ul>
+</section>
+
+
+
+</div><!-- .reveal -->
+</div><!-- .slides -->
+
+<script src='lib/js/head.min.js'></script>
+<script src='js/reveal.min.js'></script>
+
+<script>
+  // More info about config & dependencies:
+  // - https://github.com/hakimel/reveal.js#configuration
+  // - https://github.com/hakimel/reveal.js#dependencies
+  Reveal.initialize({
+    // Transition style for full page slide backgrounds
+    backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+    // Vertical centering of slides
+    center: true,
+
+    // Display presentation control arrows
+    controls: true,
+
+    // Visibility rule for backwards navigation arrows; "faded", "hidden" or "visible"
+    controlsBackArrows: 'faded',
+
+    // Determines where controls appear, "edges" or "bottom-right"
+    controlsLayout: 'edges',
+
+    // Specify the average time in seconds that you think you will spend
+    // presenting each slide. This is used to show a pacing timer in the
+    // speaker view
+    defaultTiming: 10,
+
+    // Turns fragments on and off globally
+    fragments: true,
+
+    // Flags whether to include the current fragment in the URL, so that reloading brings you to the same fragment position
+    fragmentInURL: true,
+
+    // Flags if we should show a help overlay when the questionmark key is pressed
+    help: true,
+
+    // Hides the address bar on mobile devices
+    hideAddressBar: true,
+
+    // Push each slide change to the browser history
+    history: true,
+
+    // Enable keyboard shortcuts for navigation
+    keyboard: true,
+
+    // Loop the presentation
+    loop: false,
+
+    // Enable slide navigation via mouse wheel
+    mouseWheel: true,
+
+    // Enable the slide overview mode
+    overview: true,
+
+    // Display a presentation progress bar
+    progress: false,
+
+    // Flags if speaker notes should be visible to all viewers
+    showNotes: false,
+
+    // Display the page number of the current slide
+    slideNumber: true,
+
+    // Enables touch navigation on devices with touch input
+    touch: true,
+
+    // Transition style
+    transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+    // Transition speed
+    transitionSpeed: 'default', // default/fast/slow
+
+    // Number of slides away from the current that are visible
+    viewDistance: 3,
+
+    dependencies: [
+      { src: 'plugin/markdown/marked.js' },
+      { src: 'plugin/markdown/markdown.js' },
+      { src: 'plugin/notes/notes.js', async: true },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+    ]
+  });
+</script>
+</body>
+</html>
