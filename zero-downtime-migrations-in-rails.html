@@ -1,0 +1,358 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+
+  <title>Zero downtime migrations in Rails</title>
+  <meta name='description' content='Zero downtime migrations in Ruby on Rails'>
+
+  <link rel='stylesheet' href='css/reveal.min.css'>
+  <link rel='stylesheet' href='css/theme/fractalsoft_julia.css'>
+
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+</head>
+<body>
+
+<div class='reveal'>
+<div class='slides'>
+
+
+<section>
+  <section>
+    <h1>
+      <span>Zero downtime migrations in Rails</span>
+    </h1>
+    <p>
+      <a href='https://torrocus.com' target='_blank' title='Web developer'>Alek Malaszkiewicz</a> at <a href='https://fractalsoft.org' target='_blank' title='Ruby on Rails developers'>Fractal Soft</a>
+    </p>
+    <span>
+      <img src='images/zero-downtime-migrations-in-rails/turtle.gif' class='pure-image' />
+    </span>
+
+    <aside class='notes'>
+      Zero downtime => minimalizacja ryzyka przestoju
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Simple deployment process</h2>
+    <ol>
+      <li>bundle install</li>
+      <li>yarn install / npm install</li>
+      <li>rails db:create (only first time)</li>
+      <li>rails db:migrate</li>
+      <li>rails assets:precompile</li>
+      <li>rails server</li>
+    </ol>
+
+    <aside class='notes'>
+      CI pomaga w automatyzacji
+    </aside>
+  </section>
+</section>
+
+
+
+<section>
+  <section>
+    <h2>Migrations</h2>
+    <ul>
+      <li>changing the structure of db</li>
+      <li>changing the data in db</li>
+    </ul>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Working with data</h2>
+    <h3>after_party gem</h3>
+    <p>Automated post-deploy tasks</p>
+
+<pre>
+<code class='hljs shell'># run all tasks
+rake after_party:run
+
+# check tasks status
+rake after_party:status
+</code></pre>
+
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Working with data</h2>
+    <h3>good_migrations gem</h3>
+    <p>Migrations independent of the app</p>
+
+<pre>
+<code class='hljs ruby'># migration example
+class ChangeUsers < ActiveRecord::Migration[6.1]
+  class User < ActiveRecord::Base
+  end
+
+  def change
+    User.all.each do |user|
+      # do something
+    end
+  end
+end
+</code></pre>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+
+<section>
+  <section>
+    <h2>Changing structure of database</h2>
+    <p>We want to add a new column to the user table.</p>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Changing structure of database</h2>
+    <h3>The simplest solution</h3>
+
+<pre>
+<code class='hljs ruby'># migration code
+class AddLastSeenOnUsers < ActiveRecord::Migration[6.1]
+  def change
+    change_table :users do |t|
+      t.date :last_seen_on, null: true
+    end
+  end
+end
+
+# run migration
+rails db:migrate
+</code></pre>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Changing structure of database</h2>
+    <h3>Challenge</h3>
+
+    <p>There are 70k users in the database.</p>
+    <p>This migration takes locally 13 seconds.</p>
+    <p>The production has 17M users.</p>
+
+    <span>
+      <img src='images/zero-downtime-migrations-in-rails/zootopia.gif' class='pure-image' />
+    </span>
+
+    <aside class='notes'>
+      - 52 minutes downtime
+      - many branches
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Changing structure of database</h2>
+    <h3>Challenge</h3>
+
+<pre>
+<code class='hljs ruby'># migration code
+class AddLastSeenOnUsers < ActiveRecord::Migration[6.1]
+  def change
+   return if Rails.env.production? && ENV['RUN_OUT_OF_BAND_MIGRATION'].blank?
+
+    change_table :users do |t|
+      t.date :last_seen_on, null: true
+    end
+  end
+end
+
+# run migration but do not change the database
+rails db:migrate
+
+# run migration with database change
+RUN_OUT_OF_BAND_MIGRATION=1 rails db:migrate:redo VERSION=xxxxxx
+</code></pre>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Changing structure of database</h2>
+    <h3>Avoid manual tasks</h3>
+
+<pre>
+<code class='hljs ruby'># script code
+ENV['RUN_OUT_OF_BAND_MIGRATION'] = '1'
+timestamp = ARGV[0]
+fail 'timestamp must be a number' unless timestamp&.match?(/^\d{14}$/)
+file_names = Dir.foreach('db/migrate/').select { |f| f.starts_with?(timestamp) }
+fail "Expected 1 file, got #{file_names.inspect}" if file_names.size > 1
+file_name = File.basename(file_names.first, '.rb')
+require Rails.root.join('db', 'migrate', file_name)
+migration = file_name.sub(/\d+_/, '').camelize.constantize
+migration.new.change
+
+# run script
+rails runner script/out_of_band_migration.rb xxxxxx
+</code></pre>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <section>
+    <h2>Demo time</h2>
+
+    <span>
+      <img src='images/zero-downtime-migrations-in-rails/no-idea.jpg' class='pure-image' />
+    </span>
+
+    <aside class='notes'>
+    </aside>
+  </section>
+</section>
+
+
+<section>
+  <h2>Thank you</h2>
+
+  <ul>
+    <li>Fractal Soft page: <a href='https://fractalsoft.org'><strong>fractalsoft.org</strong></a></li>
+    <li>Fractal Soft blog: <a href='https://blog.fractalsoft.org'><strong>blog.fractalsoft.org</strong></a></li>
+    <li>Home page: <a href='https://torrocus.com'><strong>torrocus.com</strong></a></li>
+    <li>Blog page: <a href='https://torrocus.com/blog/'><strong>torrocus.com/blog</strong></a></li>
+  </ul>
+</section>
+
+
+
+</div><!-- .reveal -->
+</div><!-- .slides -->
+
+<script src='lib/js/head.min.js'></script>
+<script src='js/reveal.min.js'></script>
+
+<script>
+  // More info about config & dependencies:
+  // - https://github.com/hakimel/reveal.js#configuration
+  // - https://github.com/hakimel/reveal.js#dependencies
+  Reveal.initialize({
+    // Transition style for full page slide backgrounds
+    backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+    // Vertical centering of slides
+    center: true,
+
+    // Display presentation control arrows
+    controls: true,
+
+    // Visibility rule for backwards navigation arrows; "faded", "hidden" or "visible"
+    controlsBackArrows: 'faded',
+
+    // Determines where controls appear, "edges" or "bottom-right"
+    controlsLayout: 'edges',
+
+    // Specify the average time in seconds that you think you will spend
+    // presenting each slide. This is used to show a pacing timer in the
+    // speaker view
+    defaultTiming: 10,
+
+    // Turns fragments on and off globally
+    fragments: true,
+
+    // Flags whether to include the current fragment in the URL, so that reloading brings you to the same fragment position
+    fragmentInURL: true,
+
+    // Flags if we should show a help overlay when the questionmark key is pressed
+    help: true,
+
+    // Hides the address bar on mobile devices
+    hideAddressBar: true,
+
+    // Push each slide change to the browser history
+    history: true,
+
+    // Enable keyboard shortcuts for navigation
+    keyboard: true,
+
+    // Loop the presentation
+    loop: false,
+
+    // Enable slide navigation via mouse wheel
+    mouseWheel: true,
+
+    // Enable the slide overview mode
+    overview: true,
+
+    // Display a presentation progress bar
+    progress: false,
+
+    // Flags if speaker notes should be visible to all viewers
+    showNotes: false,
+
+    // Display the page number of the current slide
+    slideNumber: true,
+
+    // Enables touch navigation on devices with touch input
+    touch: true,
+
+    // Transition style
+    transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+    // Transition speed
+    transitionSpeed: 'default', // default/fast/slow
+
+    // Number of slides away from the current that are visible
+    viewDistance: 3,
+
+    dependencies: [
+      { src: 'plugin/markdown/marked.js' },
+      { src: 'plugin/markdown/markdown.js' },
+      { src: 'plugin/notes/notes.js', async: true },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+    ]
+  });
+</script>
+</body>
+</html>
